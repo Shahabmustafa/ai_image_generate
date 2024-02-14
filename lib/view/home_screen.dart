@@ -11,6 +11,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   var size = ["Small","Medium","Large"];
   String? dropValue;
+  TextEditingController createImage = TextEditingController();
+  bool loading = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,6 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       Expanded(
                         child: TextFormField(
+                          controller: createImage,
                           decoration: InputDecoration(
                             hintText: "Search Image",
                             border: OutlineInputBorder(
@@ -61,26 +64,41 @@ class _HomeScreenState extends State<HomeScreen> {
                                 child: Text(size[index]),
                               ),
                             ),
-                            onChanged: (value){},
+                            onChanged: (value){
+                              dropValue = value;
+                              setState(() {
+
+                              });
+                            },
                           ),
                         ),
                       ),
                     ],
                   ),
-                  Container(
-                    height: 55,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Colors.blueGrey,
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    child: Center(
-                      child: Text(
-                        "Generate",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                          color: Colors.white,
+                  dropValue == null ?
+                  SizedBox() :
+                  InkWell(
+                    onTap: (){
+                      
+                    },
+                    child: Container(
+                      height: 55,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Colors.blueGrey,
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      child: loading ?
+                          Center(child: CircularProgressIndicator(color: Colors.white,))
+                          :
+                      Center(
+                        child: Text(
+                          "Generate",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),
