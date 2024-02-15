@@ -36,6 +36,8 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   http: ^1.2.0
+  provider: ^6.1.1
+  dart_openai: ^5.0.0
 
 dev_dependencies:
   flutter_test:
