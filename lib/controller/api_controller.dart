@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:ai_generate_image/api/api_key.dart';
+import 'package:dart_openai/dart_openai.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
@@ -13,26 +14,35 @@ class GenerateImageController extends ChangeNotifier{
     _isLoading = value;
   }
 
-  generateImage(String text,String size)async{
+
+  generateImage()async{
     setLoading(true);
     try{
       var response = await http.post(
         Uri.parse(ApiKey.openAiLinks),
         headers: ApiKey.headers,
         body: jsonEncode({
-          "prompt" : text,
+          "prompt" : "car parking",
           "n" : 1,
-          "size" : size,
+          "size" : "512x512",
         }),
       );
       if(response.statusCode == 200){
         var data = jsonDecode(response.body.toString());
-        print(data);
+        setLoading(false);
+        return data["data"][0]["url"].toString();
+      }else if(response.statusCode == 505){
+        print("Bad gateway");
       }else{
         print("Failed to fetch Image");
+        print(response.statusCode);
+        print(response.request);
+        print(response.body);
+        setLoading(false);
       }
       setLoading(false);
     }catch(e){
+      print(e);
       setLoading(false);
     }
   }
