@@ -1,4 +1,6 @@
+import 'package:ai_generate_image/controller/api_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -10,9 +12,10 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
 
   var size = ["Small","Medium","Large"];
+  var values = ["256x256","512x512","1024x1024"];
   String? dropValue;
   TextEditingController createImage = TextEditingController();
-  bool loading = false;
+  String image = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             items: List.generate(
                               size.length,
                                   (index) => DropdownMenuItem(
-                                value: size[index],
+                                value: values[index],
                                 child: Text(size[index]),
                               ),
                             ),
@@ -75,34 +78,46 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
-                  dropValue == null ?
-                  SizedBox() :
-                  InkWell(
-                    onTap: (){
-                      
-                    },
-                    child: Container(
-                      height: 55,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: Colors.blueGrey,
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      child: loading ?
+                  Consumer<GenerateImageController>(
+                    builder: (context,value,child){
+                      return InkWell(
+                        onTap: ()async{
+                          await value.generateImage();
+
+                          // if(createImage.text.isNotEmpty && dropValue!.isNotEmpty){
+                          // }else{
+                          //   ScaffoldMessenger.of(context)
+                          //       .showSnackBar(
+                          //     SnackBar(
+                          //       content: Text("Please Pass the query and size"),
+                          //     ),
+                          //   );
+                          // }
+                        },
+                        child: Container(
+                          height: 55,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: Colors.blueGrey,
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          child: value.isLoading ?
                           Center(child: CircularProgressIndicator(color: Colors.white,))
-                          :
-                      Center(
-                        child: Text(
-                          "Generate",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                            color: Colors.white,
+                              :
+                          Center(
+                            child: Text(
+                              "Generate",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                                color: Colors.white,
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-                  ),
+                      );
+                    },
+                  )
                 ],
               ),
             ),
