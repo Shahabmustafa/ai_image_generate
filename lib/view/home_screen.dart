@@ -27,56 +27,28 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Column(
         children: [
           Expanded(
+            flex: 4,
+            child: Container(
+              color: Colors.red,
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Expanded(
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 5,vertical: 5),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: TextFormField(
-                          controller: createImage,
-                          decoration: InputDecoration(
-                            hintText: "Search Image",
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                        ),
+                  TextFormField(
+                    controller: createImage,
+                    decoration: InputDecoration(
+                      hintText: "Search Image",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
                       ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Container(
-                        height: 60,
-                        padding: EdgeInsets.symmetric(horizontal: 10),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(color: Colors.black),
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton(
-                            value: dropValue,
-                            hint: Text("Select Size"),
-                            icon: Icon(Icons.arrow_drop_down),
-                            items: List.generate(
-                              size.length,
-                                  (index) => DropdownMenuItem(
-                                value: values[index],
-                                child: Text(size[index]),
-                              ),
-                            ),
-                            onChanged: (value){
-                              dropValue = value;
-                              setState(() {
-
-                              });
-                            },
-                          ),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                   Consumer<GenerateImageController>(
                     builder: (context,value,child){
@@ -120,12 +92,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   )
                 ],
               ),
-            ),
-          ),
-          Expanded(
-            flex: 4,
-            child: Container(
-              color: Colors.red,
             ),
           ),
         ],
